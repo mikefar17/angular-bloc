@@ -17,7 +17,11 @@
             .state('collection', {
                 url: '/collection',
                 templateUrl: '/templates/collection.html'
+<<<<<<< HEAD
             });
+=======
+    });
+>>>>>>> assignment-ng-routing-and-states
     }
     angular
         .module('blocJams', ['ui.router'])
