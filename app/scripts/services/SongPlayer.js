@@ -87,8 +87,22 @@
             currentSongIndex--;
 // @desc if currentSong is less than 0 then stop the song and   
             if(currentSongIndex < 0) {
-                currentBuzzObject.stop();
-                SongPlayer.currentSong.playing = null;
+                stopSong();
+// @desc else conditional that moves to the previous song and automatically plays 
+            } else{
+                var song = currentAlbum.songs[currentSongIndex];
+                setSong(song);
+                playSong(song);
+            }
+        };
+// @function SongPlayer.next()
+// @desc switches current song to the next song 
+        SongPlayer.next = function() {
+            var currentSongIndex = getSongIndex(SongPlayer.currentSong);
+            currentSongIndex++;
+            
+            if(currentSongIndex < 0) {
+                stopSong();
 // @desc else conditional that moves to the previous song and automatically plays 
             } else{
                 var song = currentAlbum.songs[currentSongIndex];
