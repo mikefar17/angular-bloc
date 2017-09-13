@@ -13,12 +13,21 @@
             templateUrl: '/templates/directives/seek_bar.html',
             replace: true,
             restrict: "E",
-            scope: {},
+            scope: {
+                onChange: '&'
+            },
             link: function(scope, element, attributes) {
                 scope.value = 0;
                 scope.max = 100;
                 
                 var seekBar = $(element);
+                attributes.$observe('value', function(newValue) {
+                    scope.value = newValue;
+                });
+// code observes the values of the attributes we declare in the HTML by specifying the attribute name in the first argument. When the observed attribute is set or changed, we execute a callback (the second argument) 
+                attributes.$observe('max', function(newValue) {
+                    scope.max = newValue;
+                });
                 
                 var percentString = function() {
                     var value = scope.value;
@@ -30,10 +39,14 @@
                 scope.fillStyle = function() {
                     return {width: percentString()};
                 };
+                scope.thumbStyle = function() {
+                    return {left: percentString()};
+                };
                 
                 scope.onClickSeekBar = function(event) {
                     var percent = calculatePercent(seekBar, event);
                     scope.value = percent * scope.max;
+                    notifyOnChange(scope.value);
                 };
                 
                 scope.trackThumb = function() {
@@ -41,6 +54,7 @@
                         var percent = calculatePercent(seekBar, event);
                         scope.$apply(function() {
                             scope.value = percent * scope.max;
+                            notifyOnChange(scope.value);
                         });
                     });
  
@@ -49,8 +63,11 @@
                     $document.unbind('mouseup.thumb');
                     });
                 };
-                scope.thumbStyle = function() {
-                    return {width: percentString()};
+                
+                var notifyOnChange = function(newValue) {
+                    if(typeof scope.onChange === 'function') {
+                       scope.onChange({value: newValue});
+                    }
                 };
             }
         };
