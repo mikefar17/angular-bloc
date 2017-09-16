@@ -39,6 +39,7 @@
                 scope.fillStyle = function() {
                     return {width: percentString()};
                 };
+                
                 scope.thumbStyle = function() {
                     return {left: percentString()};
                 };
@@ -63,7 +64,8 @@
                     $document.unbind('mouseup.thumb');
                     });
                 };
-                
+            
+			
                 var notifyOnChange = function(newValue) {
                     if(typeof scope.onChange === 'function') {
                        scope.onChange({value: newValue});
